@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithProgress as fetch } from "@/lib/request-progress";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { getCloudinaryImageUrl } from "@/lib/cloudinary-image";

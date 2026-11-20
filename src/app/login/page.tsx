@@ -6,6 +6,7 @@ import Link from "next/link";
 import { PasswordInput } from "@/components/password-input";
 import { useLanguage } from "@/components/language-provider";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { withRequestProgress } from "@/lib/request-progress";
 
 export default function LoginPage() {
   const { t } = useLanguage();
@@ -18,18 +19,25 @@ export default function LoginPage() {
     setError("");
 
     const form = new FormData(event.currentTarget);
-    const result = await signIn("credentials", {
-      email: String(form.get("email")),
-      password: String(form.get("password")),
-      redirect: false,
-    });
+    try {
+      const result = await withRequestProgress(() =>
+        signIn("credentials", {
+          email: String(form.get("email")),
+          password: String(form.get("password")),
+          redirect: false,
+        }),
+      );
 
-    setLoading(false);
-    if (result?.error) {
-      setError(t("Invalid credentials or unverified account."));
-      return;
+      if (result?.error) {
+        setError(t("Invalid credentials or unverified account."));
+        return;
+      }
+      window.location.href = "/";
+    } catch {
+      setError(t("Unable to sign in. Please try again."));
+    } finally {
+      setLoading(false);
     }
-    window.location.href = "/";
   }
 
   return (

@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithProgress as fetch } from "@/lib/request-progress";
 import { useRef, useState } from "react";
 import {
   orderSummaryItemsSchema,

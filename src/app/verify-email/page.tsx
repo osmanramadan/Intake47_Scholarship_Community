@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithProgress as fetch } from "@/lib/request-progress";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -24,6 +25,8 @@ export default function VerifyEmailPage() {
       const body = await response.json();
       setSuccess(response.ok);
       setMessage(t(body.message ?? body.error));
+    }).catch(() => {
+      setMessage(t("Unable to verify your email. Please try again."));
     });
   }, [t]);
 

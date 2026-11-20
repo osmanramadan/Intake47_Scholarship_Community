@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithProgress as fetch } from "@/lib/request-progress";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/components/language-provider";

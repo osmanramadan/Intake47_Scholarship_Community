@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithProgress as fetch } from "@/lib/request-progress";
 import { useState } from "react";
 import { ZoomableImage } from "@/components/zoomable-image";
 import { useLanguage } from "@/components/language-provider";

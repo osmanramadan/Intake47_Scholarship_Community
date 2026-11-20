@@ -16,11 +16,11 @@ export async function SiteHeader() {
       <div dir="ltr" className="relative mx-auto flex min-h-20 max-w-[1180px] items-center gap-3 px-4 sm:min-h-24 sm:px-6">
         <Link href="/" className="flex min-w-0 shrink-0 items-center gap-3">
           <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white p-1 shadow-sm sm:h-16 sm:w-16">
-            <Image src="/scholarship-logo.jfif" alt="Scholarship Community logo" width={64} height={64} priority className="h-full w-full object-contain" />
+            <Image src="/scholarship-logo.jpg" alt="Scholarship Community logo" width={64} height={64} priority className="h-full w-full object-contain" />
           </span>
           <span className="flex min-w-0 flex-col">
             <span className="text-sm font-extrabold leading-tight tracking-tight text-slate-900 sm:text-base">Scholarship Community</span>
-            <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[10px]">Mansoura Branch · Intake 47</span>
+            <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[10px]">{t("Mansoura Branch · Intake 47")}</span>
           </span>
         </Link>
         <nav dir={locale === "ar" ? "rtl" : "ltr"} className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-4 whitespace-nowrap text-xs font-bold text-slate-600 xl:flex xl:gap-5 xl:text-sm">

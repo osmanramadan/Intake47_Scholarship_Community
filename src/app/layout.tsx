@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Scholarship Community",
   description: "Scholarship student community management platform",
   icons: {
-    icon: "/scholarship-logo.jfif",
+    icon: "/scholarship-logo.jpg",
   },
 };
 

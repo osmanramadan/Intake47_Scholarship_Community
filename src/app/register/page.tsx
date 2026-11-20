@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithProgress as fetch } from "@/lib/request-progress";
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { PasswordInput } from "@/components/password-input";
