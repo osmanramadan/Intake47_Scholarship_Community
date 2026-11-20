@@ -13,7 +13,7 @@ export async function SiteHeader() {
 
   return (
     <header className="border-b border-slate-200 bg-white">
-      <div dir="ltr" className="relative mx-auto flex min-h-20 max-w-[1180px] items-center gap-3 px-4 sm:min-h-24 sm:px-6">
+      <div dir="ltr" className="mx-auto grid min-h-20 max-w-[1180px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:min-h-24 sm:px-6 2xl:max-w-[1480px] 2xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
         <Link href="/" className="flex min-w-0 shrink-0 items-center gap-3">
           <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white p-1 shadow-sm sm:h-16 sm:w-16">
             <Image src="/scholarship-logo.jpg" alt="Scholarship Community logo" width={64} height={64} priority className="h-full w-full object-contain" />
@@ -23,14 +23,14 @@ export async function SiteHeader() {
             <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[10px]">{t("Mansoura Branch · Intake 47")}</span>
           </span>
         </Link>
-        <nav dir={locale === "ar" ? "rtl" : "ltr"} className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-4 whitespace-nowrap text-xs font-bold text-slate-600 xl:flex xl:gap-5 xl:text-sm">
+        <nav dir={locale === "ar" ? "rtl" : "ltr"} className="hidden items-center gap-4 whitespace-nowrap text-xs font-bold text-slate-600 2xl:flex 2xl:justify-self-center 2xl:gap-5 2xl:text-sm">
           <Link href="/dashboard" className="hover:text-[#a32332]">{t("Dashboard")}</Link>
           <Link href="/open-to-eat" className="hover:text-[#a32332]">{t("Open to eat 😊")}</Link>
           <Link href="/polls" className="hover:text-[#a32332]">{t("Polls")}</Link>
           <Link href="/schedule" className="hover:text-[#a32332]">{t("Weekly Table")}</Link>
         </nav>
         {session ? (
-          <div dir={locale === "ar" ? "rtl" : "ltr"} className="ml-auto hidden shrink-0 items-center gap-3 xl:flex">
+          <div dir={locale === "ar" ? "rtl" : "ltr"} className="hidden shrink-0 items-center gap-3 2xl:flex 2xl:justify-self-end">
             {session.user.role === "ADMIN" && (
               <Link href="/admin" aria-label={t("Open admin dashboard")} className="rounded-md border border-[#c98b92] px-3 py-2 text-sm font-bold text-[#a32332] hover:bg-[#f8e9eb]">
                 {t("Admin")}
@@ -40,13 +40,13 @@ export async function SiteHeader() {
             <LanguageSwitcher className="inline-flex items-center gap-2 rounded-md bg-[#12382b] px-3 py-2 text-sm font-bold text-white hover:bg-[#0d2f23]" />
           </div>
         ) : (
-          <div dir={locale === "ar" ? "rtl" : "ltr"} className="ml-auto hidden shrink-0 items-center gap-5 xl:flex">
+          <div dir={locale === "ar" ? "rtl" : "ltr"} className="hidden shrink-0 items-center gap-5 2xl:flex 2xl:justify-self-end">
             <Link href="/login" className="text-sm font-bold text-slate-700">{t("Sign in")}</Link>
             <Link href="/register" className="rounded-md bg-[#a32332] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#871d2a]">{t("Join the community")}</Link>
             <LanguageSwitcher className="inline-flex items-center gap-2 rounded-md bg-[#12382b] px-3 py-2 text-sm font-bold text-white hover:bg-[#0d2f23]" />
           </div>
         )}
-        <details className="group relative ml-auto shrink-0 xl:hidden">
+        <details className="group relative ml-auto shrink-0 2xl:hidden">
           <summary aria-label={t("Open navigation menu")} className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-md border border-slate-200 text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a32332]">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6">
               <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
