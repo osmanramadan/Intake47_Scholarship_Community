@@ -98,8 +98,8 @@ export default async function AdminFoodPage() {
                     <h2 className="mt-1 truncate text-lg font-bold">{displayTitle}</h2>
                     {hasUniqueDescription && <p className="mt-1 line-clamp-2 text-sm text-slate-600">{description}</p>}
                     <p className="mt-2 text-sm text-slate-500">
-                      {t(post.status.toLowerCase())} · {t("Opened {date}", { date: post.createdAt.toLocaleString(dateLocale) })} · {t(post.orders.length === 1 ? "{count} order" : "{count} orders", { count: post.orders.length })}
-                      {post.deadline ? ` · ${t("Closes {date}", { date: post.deadline.toLocaleString(dateLocale) })}` : ""}
+                      {t(post.status.toLowerCase())} · {t("Opened {date}", { date: post.createdAt.toLocaleString(dateLocale, { timeZone: "Africa/Cairo" }) })} · {t(post.orders.length === 1 ? "{count} order" : "{count} orders", { count: post.orders.length })}
+                      {post.deadline ? ` · ${t("Closes {date}", { date: post.deadline.toLocaleString(dateLocale, { timeZone: "Africa/Cairo" }) })}` : ""}
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4 sm:flex-col sm:items-end sm:border-0 sm:pt-0">

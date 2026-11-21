@@ -59,7 +59,7 @@ export default async function AdminUsersPage() {
                   <h2 className="truncate font-bold">{user.fullName}{user.id === session.user.id && <span className="ml-2 text-xs font-semibold text-slate-500">{t("(You)")}</span>}</h2>
                   <p className="truncate text-sm text-slate-600">{user.email}</p>
                   <p className="mt-1 text-xs text-slate-500">
-                    {t(user.role.toLowerCase())} · {t(user.status.toLowerCase().replaceAll("_", " "))} · {t("joined {date}", { date: user.createdAt.toLocaleDateString(dateLocale) })}
+                    {t(user.role.toLowerCase())} · {t(user.status.toLowerCase().replaceAll("_", " "))} · {t("joined {date}", { date: user.createdAt.toLocaleString(dateLocale, { timeZone: "Africa/Cairo" }) })}
                   </p>
                 </div>
               </div>

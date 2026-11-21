@@ -25,6 +25,9 @@ export function MenuAttachmentSlider({
 
   const current = attachments[index];
   const isPdf = current.fileType === "application/pdf";
+  const pdfViewerUrl = current.id === "legacy-menu-image"
+    ? null
+    : `/api/menu-files/${encodeURIComponent(current.id)}`;
 
   function previous() {
     setIndex((currentIndex) => (currentIndex - 1 + attachments.length) % attachments.length);
@@ -38,12 +41,18 @@ export function MenuAttachmentSlider({
     <section className="mt-6" aria-label={t("Menu files")}>
       <div className="overflow-hidden border border-slate-200 bg-slate-50">
         {isPdf ? (
-          <div className="flex min-h-72 flex-col items-center justify-center gap-4 p-6 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f8e9eb] text-2xl font-black text-[#a32332]">PDF</div>
-            <p className="max-w-lg break-words font-bold">{current.fileName}</p>
-            <a href={current.url} target="_blank" rel="noreferrer" className="rounded-md bg-[#a32332] px-5 py-3 text-sm font-bold text-white hover:bg-[#871d2a]">
-              {t("Open PDF")}
-            </a>
+          <div>
+            <iframe
+              src={pdfViewerUrl ?? `${current.url}#toolbar=1&navpanes=0`}
+              title={`${title} - ${current.fileName}`}
+              className="h-[75vh] min-h-[480px] w-full border-0"
+            />
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-white px-4 py-3">
+              <p className="max-w-xl truncate text-sm font-bold">{current.fileName}</p>
+              <a href={current.url} target="_blank" rel="noreferrer" className="text-sm font-bold text-[#a32332] hover:underline">
+                {t("Open PDF in new tab")}
+              </a>
+            </div>
           </div>
         ) : (
           <img

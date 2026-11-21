@@ -23,6 +23,7 @@ export function MenuOrderCard({
   title,
   description,
   menuAttachments,
+  createdAt,
   deadline,
   currency,
   initialOrders,
@@ -31,6 +32,7 @@ export function MenuOrderCard({
   title: string;
   description: string | null;
   menuAttachments: MenuAttachment[];
+  createdAt: string;
   deadline: string | null;
   currency: string;
   initialOrders: OrderReceipt[];
@@ -102,7 +104,10 @@ export function MenuOrderCard({
           <h2 className="mt-2 text-2xl font-bold">{title}</h2>
           {description && <p className="mt-2 text-slate-600">{description}</p>}
         </div>
-        {deadline && <p className="text-sm font-semibold text-slate-500">{t("Order by {date}", { date: new Date(deadline).toLocaleString(locale === "ar" ? "ar-EG" : "en-US") })}</p>}
+        <div className="text-right">
+          <p className="text-xs font-semibold text-slate-500">{t("Added {date}", { date: new Date(createdAt).toLocaleString(locale === "ar" ? "ar-EG" : "en-US", { timeZone: "Africa/Cairo" }) })}</p>
+          {deadline && <p className="mt-1 text-sm font-semibold text-slate-500">{t("Order by {date}", { date: new Date(deadline).toLocaleString(locale === "ar" ? "ar-EG" : "en-US", { timeZone: "Africa/Cairo" }) })}</p>}
+        </div>
       </div>
 
       <MenuAttachmentSlider title={title} attachments={menuAttachments} />

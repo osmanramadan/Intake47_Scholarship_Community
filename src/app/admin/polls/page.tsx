@@ -52,7 +52,7 @@ export default async function AdminPollsPage() {
                     <div>
                       <h3 className="font-bold">{poll.title}</h3>
                       <p className="mt-1 text-sm text-slate-500">
-                        {t("Added {date}", { date: poll.createdAt.toLocaleDateString(dateLocale) })} · {t(poll.status.toLowerCase())} · {t(voteCount === 1 ? "{count} vote" : "{count} votes", { count: voteCount })} · {t(poll.options.length === 1 ? "{count} option" : "{count} options", { count: poll.options.length })}
+                        {t("Added {date}", { date: poll.createdAt.toLocaleString(dateLocale, { timeZone: "Africa/Cairo", year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) })} · {t(poll.status.toLowerCase())} · {t(voteCount === 1 ? "{count} vote" : "{count} votes", { count: voteCount })} · {t(poll.options.length === 1 ? "{count} option" : "{count} options", { count: poll.options.length })}
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-4">

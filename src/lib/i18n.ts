@@ -42,6 +42,7 @@ const arabicTranslations: Record<string, string> = {
   "Enter dish names and prices as shown in the menu files.": "أدخل أسماء الأطباق وأسعارها كما تظهر في ملفات القائمة.",
   "(JPG/PNG/WebP/PDF; up to 10 files; 10 MB each)": "(JPG/PNG/WebP/PDF؛ حتى 10 ملفات؛ 10 ميجابايت لكل ملف)",
   "Open PDF": "فتح PDF",
+  "Open PDF in new tab": "فتح PDF في علامة تبويب جديدة",
   "Previous menu file": "ملف القائمة السابق",
   "Next menu file": "ملف القائمة التالي",
   "Account administration": "إدارة الحسابات",

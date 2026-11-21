@@ -12,7 +12,7 @@ export default async function SchedulePage() {
   const session = await getCachedServerSession();
   if (!session) redirect("/login");
   const locale = await getLocale();
-  const t = (message: string) => translate(locale, message);
+  const t = (message: string, values?: Record<string, string | number>) => translate(locale, message, values);
   const dateLocale = locale === "ar" ? "ar-EG" : "en-US";
 
   const schedules = await prisma.courseSchedule.findMany({
@@ -42,6 +42,7 @@ export default async function SchedulePage() {
                       </p>
                     )}
                     {schedule.description && <p dir="auto" className="mx-auto mt-3 max-w-2xl text-center leading-6 text-slate-600">{schedule.description}</p>}
+                    <p className="mt-2 text-xs font-semibold text-slate-500">{t("Added {date}", { date: schedule.createdAt.toLocaleString(dateLocale, { timeZone: "Africa/Cairo" }) })}</p>
                   </div>
                   <div className="mt-4 flex justify-end">
                     <a href={schedule.fileUrl} target="_blank" rel="noreferrer" className="text-sm font-bold text-[#a32332] hover:underline">

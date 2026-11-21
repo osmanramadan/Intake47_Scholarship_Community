@@ -99,7 +99,8 @@ export default async function AdminFoodPostOrdersPage({
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#a32332]">{t("Open to eat post")} · {t(post.status.toLowerCase())}</p>
               <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">{displayTitle}</h1>
               {hasUniqueDescription && <p className="mt-2 text-slate-600">{description}</p>}
-              {post.deadline && <p className="mt-3 text-sm text-slate-500">{t("Order deadline: {date}", { date: post.deadline.toLocaleString(dateLocale) })}</p>}
+              <p className="mt-3 text-xs font-semibold text-slate-500">{t("Added {date}", { date: post.createdAt.toLocaleString(dateLocale, { timeZone: "Africa/Cairo" }) })}</p>
+              {post.deadline && <p className="mt-1 text-sm text-slate-500">{t("Order deadline: {date}", { date: post.deadline.toLocaleString(dateLocale, { timeZone: "Africa/Cairo" }) })}</p>}
             </div>
             <div className="flex flex-col items-start gap-3 sm:items-end">
               <DeleteOpenToEatPostButton sessionId={post.id} title={displayTitle} />

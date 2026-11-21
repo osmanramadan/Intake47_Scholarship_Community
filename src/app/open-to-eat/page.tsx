@@ -86,6 +86,7 @@ export default async function OpenToEatPage() {
                   title={getOpenToEatPostTitle(orderingSession.menu.title)}
                   description={orderingSession.menu.description}
                   menuAttachments={menuAttachments}
+                  createdAt={orderingSession.createdAt.toISOString()}
                   deadline={orderingSession.deadline?.toISOString() ?? null}
                   currency={currency}
                   initialOrders={orderingSession.orders.map((order) => ({

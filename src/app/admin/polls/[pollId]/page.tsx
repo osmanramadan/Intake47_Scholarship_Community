@@ -52,6 +52,7 @@ export default async function AdminPollAnalysisPage({
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#a32332]">{t("Poll analysis")}</p>
               <h1 className="mt-2 text-3xl font-black tracking-tight">{poll.title}</h1>
               {poll.description && <p className="mt-2 text-slate-600">{poll.description}</p>}
+              <p className="mt-2 text-xs font-semibold text-slate-500">{t("Added {date}", { date: poll.createdAt.toLocaleString(dateLocale, { timeZone: "Africa/Cairo" }) })}</p>
             </div>
             <div className="flex items-center gap-3">
               <span className="w-fit rounded-full bg-[#f8e9eb] px-3 py-1 text-xs font-bold uppercase tracking-wide text-[#a32332]">{t(poll.status.toLowerCase())}</span>

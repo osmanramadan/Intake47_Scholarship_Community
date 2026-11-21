@@ -14,12 +14,12 @@ export default async function AdminSchedulePage() {
   if (!session) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/dashboard");
   const locale = await getLocale();
-  const t = (message: string) => translate(locale, message);
+  const t = (message: string, values?: Record<string, string | number>) => translate(locale, message, values);
   const dateLocale = locale === "ar" ? "ar-EG" : "en-US";
 
   const schedules = await prisma.courseSchedule.findMany({
     orderBy: { createdAt: "desc" },
-    select: { id: true, title: true, weekStart: true, weekEnd: true, fileName: true },
+    select: { id: true, title: true, weekStart: true, weekEnd: true, fileName: true, createdAt: true },
   });
 
   return (
@@ -48,6 +48,7 @@ export default async function AdminSchedulePage() {
                     {schedule.weekEnd?.toLocaleDateString(dateLocale) ?? ""}
                     {schedule.weekStart || schedule.weekEnd ? " · " : ""}
                     {schedule.fileName}
+                    {" · "}{t("Added {date}", { date: schedule.createdAt.toLocaleString(locale === "ar" ? "ar-EG" : "en-US", { timeZone: "Africa/Cairo" }) })}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-4">

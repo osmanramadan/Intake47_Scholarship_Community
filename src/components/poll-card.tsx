@@ -80,7 +80,7 @@ export function PollCard({ poll }: { poll: Poll }) {
         <div>
           <h2 className="text-2xl font-bold">{poll.title}</h2>
           <p className="mt-2 text-xs font-semibold text-slate-500">
-            {t("Added {date}", { date: new Date(poll.createdAt).toLocaleDateString(locale === "ar" ? "ar-EG" : "en-US") })}
+            {t("Added {date}", { date: new Date(poll.createdAt).toLocaleString(locale === "ar" ? "ar-EG" : "en-US", { timeZone: "Africa/Cairo", year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) })}
           </p>
           {poll.description && <p className="mt-2 text-sm leading-6 text-slate-600">{poll.description}</p>}
         </div>
