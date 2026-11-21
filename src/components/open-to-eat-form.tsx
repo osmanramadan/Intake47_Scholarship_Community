@@ -42,8 +42,8 @@ export function OpenToEatForm() {
         <input name="title" required minLength={2} maxLength={150} placeholder={t("For example: Friday lunch order")} className="mt-2 w-full rounded-md border border-slate-200 px-4 py-3 outline-none focus:border-[#a32332] focus:ring-4 focus:ring-[#a32332]/10" />
       </label>
       <label className="block text-sm font-bold">
-        {t("Menu image")} <span className="font-normal text-slate-500">{t("(JPG/PNG/WebP; max 5 MB)")}</span>
-        <input name="menuImage" type="file" accept="image/jpeg,image/png,image/webp" required className="mt-2 block w-full rounded-md border border-slate-200 px-4 py-3 text-sm" />
+        {t("Menu files")} <span className="font-normal text-slate-500">{t("(JPG/PNG/WebP/PDF; up to 10 files; 10 MB each)")}</span>
+        <input name="menuFiles" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple required className="mt-2 block w-full rounded-md border border-slate-200 px-4 py-3 text-sm" />
       </label>
       <label className="block text-sm font-bold">
         {t("Post details")} <span className="font-normal text-slate-500">{t("(optional)")}</span>

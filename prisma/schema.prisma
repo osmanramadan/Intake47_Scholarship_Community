@@ -103,6 +103,23 @@ model Menu {
   updatedAt     DateTime          @updatedAt
   foodItems     FoodItem[]
   sessions      OrderingSession[]
+  attachments   MenuAttachment[]
+}
+
+model MenuAttachment {
+  id           String   @id @default(cuid())
+  menuId       String
+  url          String
+  publicId     String
+  resourceType String
+  fileName     String
+  fileType     String
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  menu Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@index([menuId, sortOrder])
 }
 
 model FoodItem {

@@ -19,7 +19,7 @@ export default async function PollsPage() {
       status: "OPEN",
       OR: [{ deadline: null }, { deadline: { gt: new Date() } }],
     },
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
     include: {
       options: { orderBy: { sortOrder: "asc" }, include: { _count: { select: { votes: true } } } },
       votes: { where: { userId: session.user.id }, select: { optionId: true } },
@@ -44,9 +44,9 @@ export default async function PollsPage() {
                   title: poll.title,
                   description: poll.description,
                   imageUrl: poll.imageUrl,
+                  createdAt: poll.createdAt.toISOString(),
                   deadline: poll.deadline?.toISOString() ?? null,
                   allowVoteChange: poll.allowVoteChange,
-                  showResultsBeforeClose: poll.showResultsBeforeClose,
                   selectedOptionId: poll.votes[0]?.optionId ?? null,
                   options: poll.options.map((option) => ({ id: option.id, text: option.text, votes: option._count.votes })),
                 }}

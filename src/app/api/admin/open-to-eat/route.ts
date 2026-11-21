@@ -11,7 +11,13 @@ const postSchema = z.object({
   deadline: z.string().optional(),
 });
 
-type UploadedMenuImage = { publicId: string };
+type UploadedMenuFile = {
+  url: string;
+  publicId: string;
+  resourceType: "image" | "raw";
+  fileName: string;
+  fileType: string;
+};
 
 function safeCloudinaryErrorMessage(error: unknown) {
   const message = error instanceof Error ? error.message : "Cloudinary upload failed.";
@@ -23,10 +29,12 @@ function safeCloudinaryErrorMessage(error: unknown) {
     .slice(0, 300);
 }
 
-function uploadMenuImage(buffer: Buffer) {
-  return new Promise<{ secure_url: string; public_id: string }>((resolve, reject) => {
+function uploadMenuFile(file: File) {
+  const resourceType = file.type === "application/pdf" ? "raw" : "image";
+  return new Promise<UploadedMenuFile>((resolve, reject) => {
+    file.arrayBuffer().then((bytes) => {
     const stream = cloudinary.uploader.upload_stream(
-      { folder: "scholarship-community/open-to-eat", resource_type: "image" },
+      { folder: "scholarship-community/open-to-eat", resource_type: resourceType },
       (error, result) => {
         if (error || !result) {
           const uploadError = error && typeof error === "object" && "error" in error ? error.error : error;
@@ -36,10 +44,17 @@ function uploadMenuImage(buffer: Buffer) {
           reject(new Error(safeCloudinaryErrorMessage(new Error(message))));
           return;
         }
-        resolve({ secure_url: result.secure_url, public_id: result.public_id });
+        resolve({
+          url: result.secure_url,
+          publicId: result.public_id,
+          resourceType,
+          fileName: file.name,
+          fileType: file.type,
+        });
       },
     );
-    stream.end(buffer);
+      stream.end(Buffer.from(bytes));
+    }).catch(reject);
   });
 }
 
@@ -60,27 +75,34 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Choose an order deadline in the future." }, { status: 400 });
   }
 
-  const image = formData.get("menuImage");
-  if (!(image instanceof File) || image.size === 0) {
-    return NextResponse.json({ error: "Choose a menu image to publish this post." }, { status: 400 });
+  const files = formData.getAll("menuFiles").filter((entry): entry is File => entry instanceof File);
+  if (files.length === 0) {
+    return NextResponse.json({ error: "Choose at least one menu image or PDF." }, { status: 400 });
   }
-  if (!["image/jpeg", "image/png", "image/webp"].includes(image.type) || image.size > 5 * 1024 * 1024) {
-    return NextResponse.json({ error: "Menu images must be JPG, PNG, or WebP files smaller than 5 MB." }, { status: 400 });
+  if (files.length > 10) {
+    return NextResponse.json({ error: "Add up to 10 menu files." }, { status: 400 });
+  }
+  for (const file of files) {
+    if (!["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(file.type) || file.size > 10 * 1024 * 1024) {
+      return NextResponse.json({ error: "Menu files must be JPG, PNG, WebP, or PDF files smaller than 10 MB." }, { status: 400 });
+    }
   }
   if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
     return NextResponse.json({ error: "Menu image uploads are not configured." }, { status: 503 });
   }
 
-  let uploadedImage: UploadedMenuImage | undefined;
+  const uploadedFiles: UploadedMenuFile[] = [];
   try {
-    const upload = await uploadMenuImage(Buffer.from(await image.arrayBuffer()));
-    uploadedImage = { publicId: upload.public_id };
+    for (const file of files) {
+      uploadedFiles.push(await uploadMenuFile(file));
+    }
+    const firstImage = uploadedFiles.find((file) => file.resourceType === "image");
     await prisma.menu.create({
       data: {
         title: parsed.data.title,
         description: parsed.data.description || null,
-        imageUrl: upload.secure_url,
-        imagePublicId: upload.public_id,
+        imageUrl: firstImage?.url ?? null,
+        imagePublicId: firstImage?.publicId ?? null,
         isActive: true,
         sessions: {
           create: {
@@ -89,17 +111,25 @@ export async function POST(request: Request) {
             deadline,
           },
         },
+        attachments: {
+          create: uploadedFiles.map((file, sortOrder) => ({
+            url: file.url,
+            publicId: file.publicId,
+            resourceType: file.resourceType,
+            fileName: file.fileName,
+            fileType: file.fileType,
+            sortOrder,
+          })),
+        },
       },
     });
     return NextResponse.json({ message: "Open to eat post published. Students can order now." }, { status: 201 });
   } catch (error) {
-    if (uploadedImage) {
-      try {
-        await cloudinary.uploader.destroy(uploadedImage.publicId, { resource_type: "image" });
-      } catch (cleanupError) {
-        console.error("Open to eat menu image cleanup failed", safeCloudinaryErrorMessage(cleanupError));
-      }
-    }
+    await Promise.all(uploadedFiles.map((file) =>
+      cloudinary.uploader.destroy(file.publicId, { resource_type: file.resourceType }).catch((cleanupError) => {
+        console.error("Open to eat menu file cleanup failed", safeCloudinaryErrorMessage(cleanupError));
+      }),
+    ));
     const detail = safeCloudinaryErrorMessage(error);
     console.error("Open to eat post creation failed", detail);
     return NextResponse.json({ error: `Could not publish the Open to eat post: ${detail}` }, { status: 500 });

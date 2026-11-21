@@ -15,9 +15,10 @@ export default async function AdminPollsPage() {
   if (session.user.role !== "ADMIN") redirect("/dashboard");
   const locale = await getLocale();
   const t = (message: string, values?: Record<string, string | number>) => translate(locale, message, values);
+  const dateLocale = locale === "ar" ? "ar-EG" : "en-US";
 
   const polls = await prisma.poll.findMany({
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
     include: { options: { include: { _count: { select: { votes: true } } } } },
   });
 
@@ -51,7 +52,7 @@ export default async function AdminPollsPage() {
                     <div>
                       <h3 className="font-bold">{poll.title}</h3>
                       <p className="mt-1 text-sm text-slate-500">
-                        {t(poll.status.toLowerCase())} · {t(voteCount === 1 ? "{count} vote" : "{count} votes", { count: voteCount })} · {t(poll.options.length === 1 ? "{count} option" : "{count} options", { count: poll.options.length })}
+                        {t("Added {date}", { date: poll.createdAt.toLocaleDateString(dateLocale) })} · {t(poll.status.toLowerCase())} · {t(voteCount === 1 ? "{count} vote" : "{count} votes", { count: voteCount })} · {t(poll.options.length === 1 ? "{count} option" : "{count} options", { count: poll.options.length })}
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-4">

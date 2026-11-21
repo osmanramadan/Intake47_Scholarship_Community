@@ -2,7 +2,7 @@
 
 import { fetchWithProgress as fetch } from "@/lib/request-progress";
 import { FormEvent, useState } from "react";
-import { ZoomableImage } from "@/components/zoomable-image";
+import { MenuAttachmentSlider, type MenuAttachment } from "@/components/menu-attachment-slider";
 import { useLanguage } from "@/components/language-provider";
 
 type OrderLine = { itemName: string; quantity: number; unitPrice: string };
@@ -22,7 +22,7 @@ export function MenuOrderCard({
   sessionId,
   title,
   description,
-  menuImageUrl,
+  menuAttachments,
   deadline,
   currency,
   initialOrders,
@@ -30,7 +30,7 @@ export function MenuOrderCard({
   sessionId: string;
   title: string;
   description: string | null;
-  menuImageUrl: string;
+  menuAttachments: MenuAttachment[];
   deadline: string | null;
   currency: string;
   initialOrders: OrderReceipt[];
@@ -105,7 +105,7 @@ export function MenuOrderCard({
         {deadline && <p className="text-sm font-semibold text-slate-500">{t("Order by {date}", { date: new Date(deadline).toLocaleString(locale === "ar" ? "ar-EG" : "en-US") })}</p>}
       </div>
 
-      <ZoomableImage src={menuImageUrl} alt={`${title} menu`} />
+      <MenuAttachmentSlider title={title} attachments={menuAttachments} />
 
       {submittedOrders.length > 0 && (
         <section className="mt-6 border-t border-slate-200 pt-5">
@@ -157,7 +157,7 @@ export function MenuOrderCard({
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 className="font-bold">{t(submittedOrders.length > 0 ? "Place another separate order" : "Your order")}</h3>
-              <p className="mt-1 text-sm text-slate-500">{t("Enter dish names and prices as shown in the menu image.")}</p>
+              <p className="mt-1 text-sm text-slate-500">{t("Enter dish names and prices as shown in the menu files.")}</p>
             </div>
             <button
               type="button"

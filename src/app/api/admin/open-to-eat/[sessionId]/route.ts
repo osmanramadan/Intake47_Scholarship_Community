@@ -130,17 +130,63 @@ export async function DELETE(
       menuId: true,
       menu: {
         select: {
+          imageUrl: true,
           imagePublicId: true,
-          foodItems: { select: { imagePublicId: true } },
+          attachments: { select: { publicId: true, resourceType: true, url: true } },
+          foodItems: { select: { imageUrl: true, imagePublicId: true } },
         },
       },
     },
   });
   if (!post) return NextResponse.json({ error: "Open to eat post not found." }, { status: 404 });
 
-  let menuDeleted = false;
+  const otherSessionCount = await prisma.orderingSession.count({
+    where: { menuId: post.menuId, id: { not: post.id } },
+  });
+  if (
+    otherSessionCount === 0 &&
+    (
+      Boolean(post.menu.imageUrl && !post.menu.imagePublicId) ||
+      post.menu.attachments.some((attachment) => !attachment.publicId) ||
+      post.menu.foodItems.some((item) => item.imageUrl && !item.imagePublicId)
+    )
+  ) {
+    return NextResponse.json({ error: "An Open to eat image is missing its Cloudinary ID. The post and its orders were kept." }, { status: 502 });
+  }
+  const imagePublicIds = otherSessionCount === 0
+    ? [...new Set([
+      ...post.menu.attachments.map((attachment) => attachment.publicId),
+      post.menu.imagePublicId,
+      ...post.menu.foodItems.map((item) => item.imagePublicId),
+    ].filter((id): id is string => Boolean(id)))]
+    : [];
+
+  if (imagePublicIds.length > 0) {
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      return NextResponse.json({ error: "Open to eat image deletion is not configured. The post and its orders were kept." }, { status: 503 });
+    }
+
+    const cleanupResults = await Promise.all(imagePublicIds.map(async (publicId) => {
+      try {
+        const attachment = post.menu.attachments.find((item) => item.publicId === publicId);
+        const resourceType = attachment?.resourceType === "raw" ? "raw" : "image";
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: resourceType });
+        if (result.result === "ok" || result.result === "not found") return true;
+        console.error("Cloudinary did not confirm Open to eat image deletion", result.result);
+        return false;
+      } catch (error) {
+        console.error("Open to eat image cleanup failed in Cloudinary", error);
+        return false;
+      }
+    }));
+
+    if (cleanupResults.some((success) => !success)) {
+      return NextResponse.json({ error: "Could not delete all Open to eat images. The post and its orders were kept." }, { status: 502 });
+    }
+  }
+
   try {
-    menuDeleted = await prisma.$transaction(async (transaction) => {
+    await prisma.$transaction(async (transaction) => {
       const orders = await transaction.order.findMany({
         where: { sessionId: post.id },
         select: { id: true },
@@ -152,45 +198,20 @@ export async function DELETE(
       await transaction.orderingSession.delete({ where: { id: post.id } });
 
       const remainingSessions = await transaction.orderingSession.count({ where: { menuId: post.menuId } });
-      if (remainingSessions > 0) return false;
+      if (remainingSessions > 0) return;
 
       await transaction.menu.delete({ where: { id: post.menuId } });
-      return true;
     });
   } catch (error) {
     console.error("Open to eat post deletion failed", error);
-    return NextResponse.json({ error: "The post and its orders could not be deleted. Please try again." }, { status: 500 });
-  }
-
-  const imagePublicIds = menuDeleted
-    ? [...new Set([post.menu.imagePublicId, ...post.menu.foodItems.map((item) => item.imagePublicId)].filter((id): id is string => Boolean(id)))]
-    : [];
-  let imageCleanupFailed = false;
-
-  if (imagePublicIds.length > 0) {
-    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-      imageCleanupFailed = true;
-    } else {
-      const cleanupResults = await Promise.all(imagePublicIds.map(async (publicId) => {
-        try {
-          const result = await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
-          if (result.result === "ok" || result.result === "not found") return true;
-          console.error("Cloudinary did not confirm Open to eat image deletion", result.result);
-          return false;
-        } catch {
-          console.error("Open to eat image cleanup failed in Cloudinary.");
-          return false;
-        }
-      }));
-      imageCleanupFailed = cleanupResults.some((success) => !success);
+    if (imagePublicIds.length > 0) {
+      return NextResponse.json({ error: "The images were deleted, but the post could not be deleted. Please retry." }, { status: 500 });
     }
+    return NextResponse.json({ error: "The post and its orders could not be deleted. Please try again." }, { status: 500 });
   }
 
   return NextResponse.json({
     deleted: true,
-    warning: imageCleanupFailed,
-    message: imageCleanupFailed
-      ? "The post and its orders were deleted, but Cloudinary did not confirm every image deletion. Check the Cloudinary credentials and remove any remaining Open to eat images."
-      : "Open to eat post and all its orders deleted.",
+    message: "Open to eat post and all its orders deleted.",
   });
 }

@@ -20,10 +20,10 @@ export function RequestLoadingMessage({ fullScreen = false }: { fullScreen?: boo
         role="status"
         aria-live="polite"
         aria-atomic="true"
-        className="flex items-center gap-3 rounded-full bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-lg"
+        className="flex items-center gap-3 rounded-full border border-[#ead1d0] bg-white px-4 py-3 text-sm font-semibold text-[#861f2d] shadow-lg"
       >
         <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 animate-spin">
-          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="3" />
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
           <path d="M21 12a9 9 0 0 0-9-9" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="3" />
         </svg>
         <span>{t("Request in progress...")}</span>

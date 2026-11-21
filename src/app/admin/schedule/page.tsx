@@ -3,6 +3,7 @@ import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SiteHeader } from "@/components/site-header";
 import { ScheduleForm } from "@/components/schedule-form";
+import { DeleteScheduleButton } from "@/components/delete-schedule-button";
 import { getLocale } from "@/lib/locale";
 import { translate } from "@/lib/i18n";
 
@@ -49,7 +50,10 @@ export default async function AdminSchedulePage() {
                     {schedule.fileName}
                   </p>
                 </div>
-                <a href="/schedule" className="text-sm font-bold text-[#a32332] hover:underline">{t("View student page →")}</a>
+                <div className="flex flex-wrap items-center gap-4">
+                  <a href="/schedule" className="text-sm font-bold text-[#a32332] hover:underline">{t("View student page →")}</a>
+                  <DeleteScheduleButton scheduleId={schedule.id} title={schedule.title} />
+                </div>
               </article>
             ))}
             {schedules.length === 0 && <p className="bg-white p-6 text-sm text-slate-600 shadow-sm">{t("No weekly tables have been published yet.")}</p>}

@@ -1,9 +1,10 @@
 import { notFound, redirect } from "next/navigation";
+import Link from "next/link";
 import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { combineOrderSummaryItems, orderSummaryItemsSchema } from "@/lib/order-summary";
 import { SiteHeader } from "@/components/site-header";
-import { ZoomableImage } from "@/components/zoomable-image";
+import { MenuAttachmentSlider } from "@/components/menu-attachment-slider";
 import { DeleteOpenToEatPostButton } from "@/components/delete-open-to-eat-post-button";
 import { OrderSummaryEditor } from "@/components/order-summary-editor";
 import { getOpenToEatPostTitle } from "@/lib/open-to-eat";
@@ -30,7 +31,15 @@ export default async function AdminFoodPostOrdersPage({
     prisma.orderingSession.findUnique({
       where: { id: sessionId },
       include: {
-        menu: { select: { title: true, description: true, imageUrl: true } },
+        menu: {
+          select: {
+            title: true,
+            description: true,
+            imageUrl: true,
+            imagePublicId: true,
+            attachments: { orderBy: { sortOrder: "asc" }, select: { id: true, url: true, resourceType: true, fileName: true, fileType: true } },
+          },
+        },
         orders: {
           where: { status: "SUBMITTED" },
           orderBy: { submittedAt: "desc" },
@@ -72,12 +81,17 @@ export default async function AdminFoodPostOrdersPage({
   const displayTitle = getOpenToEatPostTitle(post.menu.title);
   const description = post.menu.description?.trim();
   const hasUniqueDescription = description && description.toLowerCase() !== post.menu.title.trim().toLowerCase();
+  const menuAttachments = post.menu.attachments.length > 0
+    ? post.menu.attachments
+    : post.menu.imageUrl
+      ? [{ id: "legacy-menu-image", url: post.menu.imageUrl, resourceType: "image", fileName: "Menu image", fileType: "image" }]
+      : [];
 
   return (
     <main className="min-h-screen bg-[#f5f6f7] text-[#202124]">
       <SiteHeader />
       <section className="mx-auto max-w-[1080px] px-4 pb-16 pt-10 sm:px-6 sm:pt-12">
-        <a href="/admin/food" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to Open to eat posts")}</a>
+        <Link href="/admin/food" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to Open to eat posts")}</Link>
 
         <header className="mt-7 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -96,7 +110,7 @@ export default async function AdminFoodPostOrdersPage({
             <span className="rounded-full bg-slate-100 px-3 py-1.5 font-semibold">{t(post.orders.length === 1 ? "{count} order" : "{count} orders", { count: post.orders.length })}</span>
             <span className="rounded-full bg-slate-100 px-3 py-1.5 font-semibold">{t(students.length === 1 ? "{count} student" : "{count} students", { count: students.length })}</span>
           </div>
-          {post.menu.imageUrl && <ZoomableImage src={post.menu.imageUrl} alt={`${displayTitle} menu`} />}
+          <MenuAttachmentSlider title={displayTitle} attachments={menuAttachments} />
         </header>
 
         <OrderSummaryEditor

@@ -26,7 +26,6 @@ export function DeleteOpenToEatPostButton({
       const response = await fetch(`/api/admin/open-to-eat/${sessionId}`, { method: "DELETE" });
       const body = await response.json();
       if (body.deleted) {
-        if (body.warning) window.alert(t(body.message));
         router.push("/admin/food");
         router.refresh();
         return;

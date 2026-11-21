@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { orderSummaryItemsSchema } from "@/lib/order-summary";
@@ -23,7 +24,14 @@ export default async function AdminFoodPage() {
     prisma.orderingSession.findMany({
       orderBy: { createdAt: "desc" },
       include: {
-        menu: { select: { title: true, description: true, imageUrl: true } },
+        menu: {
+          select: {
+            title: true,
+            description: true,
+            imageUrl: true,
+            attachments: { orderBy: { sortOrder: "asc" }, take: 1, select: { url: true, fileType: true, fileName: true } },
+          },
+        },
         orders: {
           where: { status: "SUBMITTED" },
           select: { items: { select: { unitPrice: true, quantity: true } } },
@@ -40,14 +48,14 @@ export default async function AdminFoodPage() {
     <main className="min-h-screen bg-[#f5f6f7] text-[#202124]">
       <SiteHeader />
       <section className="mx-auto max-w-[1080px] px-4 pb-16 pt-10 sm:px-6 sm:pt-12">
-        <a href="/admin" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to admin")}</a>
+        <Link href="/admin" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to admin")}</Link>
         <div className="mt-8 flex flex-wrap items-end justify-between gap-5">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#a32332]">{t("Open to eat")}</p>
             <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">{t("Open to eat posts.")}</h1>
             <p className="mt-3 text-lg text-slate-600">{t("Choose a post to see its students and orders.")}</p>
           </div>
-          <a href="/admin/food/new" className="rounded-md bg-[#a32332] px-5 py-3 text-sm font-bold text-white hover:bg-[#871d2a]">{t("+ Add Open to eat post")}</a>
+          <Link href="/admin/food/new" className="rounded-md bg-[#a32332] px-5 py-3 text-sm font-bold text-white hover:bg-[#871d2a]">{t("+ Add Open to eat post")}</Link>
         </div>
         <p className="mt-6 text-sm font-semibold text-slate-600">{t(posts.length === 1 ? "{count} post" : "{count} posts", { count: posts.length })} · {t(orderCount === 1 ? "{count} submitted order" : "{count} submitted orders", { count: orderCount })}</p>
 
@@ -73,8 +81,13 @@ export default async function AdminFoodPage() {
               const hasUniqueDescription = description && description.toLowerCase() !== post.menu.title.trim().toLowerCase();
               return (
                 <article key={post.id} className="flex flex-col gap-4 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:p-5">
-                  {post.menu.imageUrl ? (
-                    <img src={getCloudinaryImageUrl(post.menu.imageUrl, 320)} alt="" loading="lazy" decoding="async" className="h-24 w-full rounded-md bg-slate-50 object-cover sm:w-32" />
+                  {(post.menu.attachments[0]?.fileType === "application/pdf") ? (
+                    <div aria-hidden="true" className="flex h-24 w-full flex-col items-center justify-center rounded-md bg-[#f8e9eb] text-[#a32332] sm:w-32">
+                      <span className="text-lg font-black">PDF</span>
+                      <span className="mt-1 max-w-28 truncate text-xs font-semibold">{post.menu.attachments[0].fileName}</span>
+                    </div>
+                  ) : (post.menu.attachments[0]?.fileType.startsWith("image/") || post.menu.imageUrl) ? (
+                    <img src={getCloudinaryImageUrl(post.menu.attachments[0]?.url ?? post.menu.imageUrl ?? "", 320)} alt="" loading="lazy" decoding="async" className="h-24 w-full rounded-md bg-slate-50 object-cover sm:w-32" />
                   ) : (
                     <div aria-hidden="true" className="flex h-24 w-full items-center justify-center rounded-md bg-slate-100 text-sm font-semibold text-slate-400 sm:w-32">
                       {t("No menu image")}

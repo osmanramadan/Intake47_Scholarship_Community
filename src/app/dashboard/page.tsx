@@ -67,7 +67,7 @@ export default async function DashboardPage() {
             <div className="bg-white p-6 shadow-sm">
               <h2 className="text-xl font-bold">{t("Need help?")}</h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">{t("Contact your administrator if you need help with an order, poll, or account.")}</p>
-              <a href="mailto:admin@example.com" className="mt-5 inline-block text-sm font-bold text-[#a32332]">{t("Contact administrator →")}</a>
+              <a href="mailto:osmanramadan840@gmail.com" className="mt-5 inline-block text-sm font-bold text-[#a32332]">{t("Contact administrator →")} (osmanramadan840@gmail.com)</a>
             </div>
             <div className="bg-white p-6 shadow-sm">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{t("Community pulse")}</p>

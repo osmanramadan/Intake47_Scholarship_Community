@@ -20,12 +20,24 @@ export default async function OpenToEatPage() {
       where: {
         status: "OPEN",
         OR: [{ deadline: null }, { deadline: { gt: new Date() } }],
-        menu: { isActive: true, imageUrl: { not: null } },
+        menu: {
+          isActive: true,
+          OR: [
+            { imageUrl: { not: null } },
+            { attachments: { some: {} } },
+          ],
+        },
       },
       orderBy: { createdAt: "desc" },
       include: {
         menu: {
-          select: { title: true, description: true, imageUrl: true },
+          select: {
+            title: true,
+            description: true,
+            imageUrl: true,
+            imagePublicId: true,
+            attachments: { orderBy: { sortOrder: "asc" }, select: { id: true, url: true, resourceType: true, fileName: true, fileType: true } },
+          },
         },
         orders: {
           where: { userId: session.user.id, status: "SUBMITTED" },
@@ -43,21 +55,37 @@ export default async function OpenToEatPage() {
       <SiteHeader />
       <section className="mx-auto max-w-[1080px] px-4 pb-16 pt-10 sm:px-6 sm:pt-12">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#a32332]">{t("Open to eat 😊")}</p>
-        <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">{t("Choose from the menu image.")}</h1>
+        <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">{t("Choose from the menu files.")}</h1>
         <p className="mt-3 max-w-2xl text-lg text-slate-600">{t("Open a post, enter the dishes, prices, and quantities you want, and submit your order for that post.")}</p>
 
         {sessions.length > 0 ? (
           <div className="mt-9 space-y-6">
             {sessions.map((orderingSession) => {
-              const menuImageUrl = orderingSession.menu.imageUrl;
-              if (!menuImageUrl) return null;
+              const menuAttachments = orderingSession.menu.attachments.length > 0
+                ? orderingSession.menu.attachments.map((attachment) => ({
+                  id: attachment.id,
+                  url: attachment.url,
+                  resourceType: attachment.resourceType,
+                  fileName: attachment.fileName,
+                  fileType: attachment.fileType,
+                }))
+                : orderingSession.menu.imageUrl
+                  ? [{
+                    id: "legacy-menu-image",
+                    url: orderingSession.menu.imageUrl,
+                    resourceType: "image",
+                    fileName: "Menu image",
+                    fileType: "image",
+                  }]
+                  : [];
+              if (menuAttachments.length === 0) return null;
               return (
                 <MenuOrderCard
                   key={orderingSession.id}
                   sessionId={orderingSession.id}
                   title={getOpenToEatPostTitle(orderingSession.menu.title)}
                   description={orderingSession.menu.description}
-                  menuImageUrl={menuImageUrl}
+                  menuAttachments={menuAttachments}
                   deadline={orderingSession.deadline?.toISOString() ?? null}
                   currency={currency}
                   initialOrders={orderingSession.orders.map((order) => ({

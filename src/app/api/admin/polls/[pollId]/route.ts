@@ -16,9 +16,12 @@ export async function DELETE(
   const { pollId } = await params;
   const poll = await prisma.poll.findUnique({
     where: { id: pollId },
-    select: { id: true, imagePublicId: true },
+    select: { id: true, imageUrl: true, imagePublicId: true },
   });
   if (!poll) return NextResponse.json({ error: "Poll not found." }, { status: 404 });
+  if (poll.imageUrl && !poll.imagePublicId) {
+    return NextResponse.json({ error: "The poll image is missing its Cloudinary ID. The poll and its votes were kept." }, { status: 502 });
+  }
 
   if (poll.imagePublicId) {
     try {
