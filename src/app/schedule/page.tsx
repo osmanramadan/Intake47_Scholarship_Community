@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SiteHeader } from "@/components/site-header";
 import { ZoomableImage } from "@/components/zoomable-image";
@@ -10,7 +9,7 @@ import { translate } from "@/lib/i18n";
 export const instant = false;
 
 export default async function SchedulePage() {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   if (!session) redirect("/login");
   const locale = await getLocale();
   const t = (message: string) => translate(locale, message);

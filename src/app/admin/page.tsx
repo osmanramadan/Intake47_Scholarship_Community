@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SiteHeader } from "@/components/site-header";
 import { getLocale } from "@/lib/locale";
@@ -17,7 +16,7 @@ const areas = [
 ];
 
 export default async function AdminPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   if (!session) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/dashboard");
   const locale = await getLocale();
@@ -46,7 +45,7 @@ export default async function AdminPage() {
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#a32332]">{t("Administration")}</p>
             <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">{t("Community control center")}</h1>
-            <p className="mt-3 max-w-2xl text-lg text-slate-600">{t("Manage every part of {name} before students use it.", { name: settings?.groupName ?? "Scholarship Community" })}</p>
+            <p className="mt-3 max-w-2xl text-lg text-slate-600">{t("Manage every part of {name} before students use it.", { name: settings?.groupName ?? t("Scholarship Community") })}</p>
           </div>
           <a href="/dashboard" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Student dashboard")}</a>
         </div>

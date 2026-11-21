@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 import { getLocale } from "@/lib/locale";
 import { translate } from "@/lib/i18n";
@@ -30,7 +29,7 @@ const features = [
 ];
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   const locale = await getLocale();
   const t = (message: string) => translate(locale, message);
   const firstName = session?.user.name.split(" ")[0];
@@ -114,9 +113,9 @@ export default async function Home() {
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1180px] flex-col justify-between gap-4 px-4 py-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:px-6">
-          <div className="flex items-center gap-3"><Image src="/scholarship-logo.jpg" alt="" width={44} height={44} className="h-11 w-11 object-contain" /><span>Scholarship Community</span></div>
+          <div className="flex items-center gap-3"><Image src="/scholarship-logo.jpg" alt="" width={44} height={44} className="h-11 w-11 object-contain" /><span>{t("Scholarship Community")}</span></div>
           <div className="flex gap-6"><a href="/dashboard" className="hover:text-[#a32332]">{t("Dashboard")}</a><a href="/account" className="hover:text-[#a32332]">{t("Account")}</a></div>
-          <span>© 2026 Scholarship Community</span>
+          <span>© 2026 {t("Scholarship Community")}</span>
         </div>
       </footer>
     </main>

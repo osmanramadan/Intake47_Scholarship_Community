@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { combineOrderSummaryItems, orderSummaryItemsSchema } from "@/lib/order-summary";
 import { SiteHeader } from "@/components/site-header";
@@ -19,7 +18,7 @@ export default async function AdminFoodPostOrdersPage({
 }: {
   params: Promise<{ sessionId: string }>;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   if (!session) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/dashboard");
   const locale = await getLocale();

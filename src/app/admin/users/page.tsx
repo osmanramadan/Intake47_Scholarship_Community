@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SiteHeader } from "@/components/site-header";
 import { UserManagementActions } from "@/components/user-management-actions";
@@ -11,7 +10,7 @@ import { getCloudinaryImageUrl } from "@/lib/cloudinary-image";
 export const instant = false;
 
 export default async function AdminUsersPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   if (!session) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/dashboard");
   const locale = await getLocale();

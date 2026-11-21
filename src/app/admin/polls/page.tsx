@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 import { PollForm } from "@/components/poll-form";
 import { DeletePollButton } from "@/components/delete-poll-button";
@@ -11,7 +10,7 @@ import { translate } from "@/lib/i18n";
 export const instant = false;
 
 export default async function AdminPollsPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   if (!session) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/dashboard");
   const locale = await getLocale();

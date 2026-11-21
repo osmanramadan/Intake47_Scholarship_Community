@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { orderSummaryItemsSchema } from "@/lib/order-summary";
 import { SiteHeader } from "@/components/site-header";
@@ -13,7 +12,7 @@ import { getCloudinaryImageUrl } from "@/lib/cloudinary-image";
 export const instant = false;
 
 export default async function AdminFoodPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   if (!session) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/dashboard");
   const locale = await getLocale();

@@ -1,13 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { getLocale } from "@/lib/locale";
 import { translate } from "@/lib/i18n";
 import { LanguageSwitcher } from "@/components/language-switcher";
 
 export async function SiteHeader() {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   const locale = await getLocale();
   const t = (message: string, values?: Record<string, string | number>) => translate(locale, message, values);
 
@@ -19,7 +18,7 @@ export async function SiteHeader() {
             <Image src="/scholarship-logo.jpg" alt="Scholarship Community logo" width={64} height={64} priority className="h-full w-full object-contain" />
           </span>
           <span className="flex min-w-0 flex-col">
-            <span className="text-sm font-extrabold leading-tight tracking-tight text-slate-900 sm:text-base">Scholarship Community</span>
+            <span className="text-sm font-extrabold leading-tight tracking-tight text-slate-900 sm:text-base">{t("Scholarship Community")}</span>
             <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[10px]">{t("Mansoura Branch · Intake 47")}</span>
           </span>
         </Link>

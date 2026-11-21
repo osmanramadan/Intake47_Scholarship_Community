@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getCachedServerSession } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 import { getLocale } from "@/lib/locale";
 import { translate } from "@/lib/i18n";
@@ -15,7 +14,7 @@ const cards = [
 ];
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getCachedServerSession();
   if (!session) redirect("/login");
 
   const locale = await getLocale();
@@ -82,9 +81,9 @@ export default async function DashboardPage() {
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1180px] flex-col justify-between gap-4 px-4 py-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:px-6">
-          <span>Scholarship Community</span>
+          <span>{t("Scholarship Community")}</span>
           <div className="flex gap-6"><a href="/" className="hover:text-[#a32332]">{t("Home")}</a><a href="/account" className="hover:text-[#a32332]">{t("Account")}</a></div>
-          <span>© 2026 Scholarship Community</span>
+          <span>© 2026 {t("Scholarship Community")}</span>
         </div>
       </footer>
     </main>

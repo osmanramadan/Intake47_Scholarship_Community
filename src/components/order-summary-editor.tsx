@@ -226,7 +226,7 @@ export function OrderSummaryEditor({
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#a32332]">{t("Order summary")}</p>
           <h2 id="order-summary-title" className="mt-2 text-2xl font-black">{t("Combined order from all students")}</h2>
           <p className="mt-2 text-sm text-slate-500">{t("Matching items are grouped with their total quantity and price.")}</p>
-          {isSaved && <p className="mt-2 text-xs font-semibold text-emerald-700">{t("Changes saved. Rebuild to include any new orders.")}</p>}
+          {isSaved && <p className="mt-2 text-xs font-semibold text-green-700">{t("Changes saved. Rebuild to include any new orders.")}</p>}
         </div>
         <div className="text-right sm:shrink-0">
           <p className="text-sm font-semibold text-slate-500">{t("Final order total")}</p>
@@ -319,7 +319,7 @@ export function OrderSummaryEditor({
       )}
 
       {error && <p role="alert" className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
-      {message && <p role="status" className="mt-4 rounded-md bg-[#f8e9eb] px-4 py-3 text-sm font-medium text-[#a32332]">{message}</p>}
+      {message && <p role="status" className="mt-4 rounded-md bg-green-50 px-4 py-3 text-sm font-medium text-green-700">{message}</p>}
 
       {(editing || items.length > 0) && (
         <div className="mt-5 flex flex-wrap gap-3 border-t border-slate-200 pt-4">
@@ -389,7 +389,7 @@ export function OrderSummaryEditor({
           </button>
         </div>
         {notesError && <p role="alert" className="mt-3 rounded-md bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{notesError}</p>}
-        {notesMessage && <p role="status" className="mt-3 rounded-md bg-[#f8e9eb] px-4 py-3 text-sm font-medium text-[#a32332]">{notesMessage}</p>}
+        {notesMessage && <p role="status" className="mt-3 rounded-md bg-green-50 px-4 py-3 text-sm font-medium text-green-700">{notesMessage}</p>}
       </div>
     </section>
   );

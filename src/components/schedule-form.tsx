@@ -60,7 +60,7 @@ export function ScheduleForm() {
         {t("Weekly timetable file")} <span className="font-normal text-slate-500">{t("(PDF, JPG, PNG, or WebP; max 10 MB)")}</span>
         <input name="file" type="file" required accept="application/pdf,image/jpeg,image/png,image/webp" className="mt-2 block w-full rounded-md border border-slate-200 px-3 py-2 text-sm" />
       </label>
-      {message && <p className="rounded-md bg-[#f8e9eb] px-4 py-3 text-sm font-medium text-[#a32332]">{message}</p>}
+      {message && <p className="rounded-md bg-green-50 px-4 py-3 text-sm font-medium text-green-700">{message}</p>}
       {error && <p role="alert" className="rounded-md bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
       <button disabled={saving} className="cursor-pointer rounded-md bg-[#a32332] px-6 py-3 font-bold text-white hover:bg-[#871d2a] disabled:cursor-not-allowed disabled:opacity-60">
         {saving ? t("Publishing weekly table...") : t("Publish Weekly Table")}

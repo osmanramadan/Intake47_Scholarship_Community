@@ -79,7 +79,7 @@ export function PollForm() {
         <input name="publish" type="checkbox" className="h-4 w-4 accent-[#a32332]" />
         {t("Publish immediately for students")}
       </label>
-      {message && <p className="rounded-md bg-[#f8e9eb] px-4 py-3 text-sm font-medium text-[#a32332]">{message}</p>}
+      {message && <p className="rounded-md bg-green-50 px-4 py-3 text-sm font-medium text-green-700">{message}</p>}
       {error && <p className="rounded-md bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
       <button disabled={saving} className="cursor-pointer rounded-md bg-[#a32332] px-6 py-3 font-bold text-white hover:bg-[#871d2a] disabled:cursor-not-allowed disabled:opacity-60">
         {saving ? t("Creating poll...") : t("Create poll")}

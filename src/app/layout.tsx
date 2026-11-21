@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { LocaleBoundary } from "@/components/locale-boundary";
+import { getLocale } from "@/lib/locale";
+import { translate } from "@/lib/i18n";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Scholarship Community",
-  description: "Scholarship student community management platform",
-  icons: {
-    icon: "/scholarship-logo.jpg",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: translate(locale, "Scholarship Community"),
+    description: "Scholarship student community management platform",
+    icons: {
+      icon: "/scholarship-logo.jpg",
+    },
+  };
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

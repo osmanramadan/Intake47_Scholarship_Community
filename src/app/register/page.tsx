@@ -47,7 +47,7 @@ export default function RegisterPage() {
         <p className="mt-2 text-slate-500">{t("Register with your scholarship email address.")}</p>
 
         {error && <p className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
-        {message && <p className="mt-5 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{message}</p>}
+        {message && <p className="mt-5 rounded-xl bg-green-50 px-4 py-3 text-sm text-green-700">{message}</p>}
 
         <label className="mt-6 block text-sm font-semibold">
           {t("Full name")}

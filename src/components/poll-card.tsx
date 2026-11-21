@@ -95,7 +95,7 @@ export function PollCard({ poll }: { poll: Poll }) {
           {saving ? t("Submitting...") : currentVote ? (poll.allowVoteChange ? t("Change vote") : t("Vote submitted")) : t("Submit vote")}
         </button>
       </div>
-      {message && <p className="mt-4 rounded-md bg-[#f8e9eb] px-4 py-3 text-sm font-medium text-[#a32332]">{message}</p>}
+      {message && <p className="mt-4 rounded-md bg-green-50 px-4 py-3 text-sm font-medium text-green-700">{message}</p>}
       {error && <p className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
     </article>
   );

@@ -107,7 +107,7 @@ export function AccountForm({ initialUser }: { initialUser: AccountUser }) {
       </div>
 
       {error && <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
-      {status && <p className="rounded-md bg-[#f8e9eb] px-4 py-3 text-sm font-medium text-[#a32332]">{status}</p>}
+      {status && <p className="rounded-md bg-green-50 px-4 py-3 text-sm font-medium text-green-700">{status}</p>}
       <div className="flex justify-end">
         <button disabled={saving} className="rounded-md bg-[#a32332] px-6 py-3 font-bold text-white shadow-lg shadow-[#a32332]/20 transition hover:bg-[#891f2b] disabled:cursor-not-allowed disabled:opacity-60">
           {saving ? t("Saving changes...") : t("Save changes")}

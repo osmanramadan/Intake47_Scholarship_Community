@@ -1,5 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { getServerSession } from "next-auth";
+import { cache } from "react";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -73,3 +75,5 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+
+export const getCachedServerSession = cache(() => getServerSession(authOptions));

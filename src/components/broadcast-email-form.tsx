@@ -84,7 +84,7 @@ export function BroadcastEmailForm({ recipientCount }: { recipientCount: number 
         <span className="mt-1 block text-right text-xs font-normal text-slate-500">{details.length}/5000</span>
       </label>
       {error && <p role="alert" className="rounded-md bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
-      {message && <p role="status" className="rounded-md bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{message}</p>}
+      {message && <p role="status" className="rounded-md bg-green-50 px-4 py-3 text-sm font-medium text-green-700">{message}</p>}
       <button
         type="submit"
         disabled={sending || recipientCount === 0}
