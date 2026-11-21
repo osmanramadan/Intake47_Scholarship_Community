@@ -54,14 +54,18 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
       }
       if (token.id) {
-        const currentUser = await prisma.user.findUnique({
-          where: { id: token.id },
-          select: { fullName: true, email: true, role: true },
-        });
-        if (currentUser) {
-          token.name = currentUser.fullName;
-          token.email = currentUser.email;
-          token.role = currentUser.role;
+        try {
+          const currentUser = await prisma.user.findUnique({
+            where: { id: token.id },
+            select: { fullName: true, email: true, role: true },
+          });
+          if (currentUser) {
+            token.name = currentUser.fullName;
+            token.email = currentUser.email;
+            token.role = currentUser.role;
+          }
+        } catch (error) {
+          console.error("Could not refresh the current user session", error);
         }
       }
       return token;
