@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import Link from "next/link";
 import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SiteHeader } from "@/components/site-header";
@@ -45,7 +46,7 @@ export default async function AdminPollAnalysisPage({
     <main className="min-h-screen bg-[#f5f6f7] text-[#202124]">
       <SiteHeader />
       <section className="mx-auto max-w-[980px] px-4 pb-16 pt-10 sm:px-6 sm:pt-12">
-        <a href="/admin/polls" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to poll administration")}</a>
+        <Link href="/admin/polls" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to poll administration")}</Link>
         <div className="mt-8 bg-white p-5 shadow-sm sm:p-9">
           <div className="flex flex-col justify-between gap-4 border-b border-slate-200 pb-6 sm:flex-row sm:items-start">
             <div>

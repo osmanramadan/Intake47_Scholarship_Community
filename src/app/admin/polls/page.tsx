@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCachedServerSession } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 import { PollForm } from "@/components/poll-form";
@@ -26,7 +27,7 @@ export default async function AdminPollsPage() {
     <main className="min-h-screen bg-[#f5f6f7] text-[#202124]">
       <SiteHeader />
       <section className="mx-auto max-w-[980px] px-4 pb-16 pt-10 sm:px-6 sm:pt-12">
-        <a href="/admin" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to admin")}</a>
+        <Link href="/admin" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to admin")}</Link>
         <div className="mt-8">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#a32332]">{t("Poll administration")}</p>
           <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">{t("Create a community poll.")}</h1>
@@ -56,7 +57,7 @@ export default async function AdminPollsPage() {
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-4">
-                      <a href={`/admin/polls/${poll.id}`} className="text-sm font-bold text-[#a32332] hover:underline">{t("View analysis →")}</a>
+                      <Link href={`/admin/polls/${poll.id}`} className="text-sm font-bold text-[#a32332] hover:underline">{t("View analysis →")}</Link>
                       <DeletePollButton pollId={poll.id} title={poll.title} />
                     </div>
                   </article>

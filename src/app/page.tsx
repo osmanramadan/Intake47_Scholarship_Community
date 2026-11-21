@@ -45,7 +45,7 @@ export default async function Home() {
             <h1 className="mt-7 max-w-2xl text-4xl font-black leading-[1.08] tracking-tight sm:text-6xl">{t("Make everyday life feel more connected.")}</h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">{t("One friendly space for scholarship students to plan the week, order food together, vote on what matters, and stay in the loop.")}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={session ? "/dashboard" : "/register"} className="rounded-md bg-[#c92335] px-5 py-3 text-sm font-bold text-white hover:bg-[#a91d2c]">{t(session ? "Open your dashboard" : "Get started free")}</a>
+              <Link href={session ? "/dashboard" : "/register"} className="rounded-md bg-[#c92335] px-5 py-3 text-sm font-bold text-white hover:bg-[#a91d2c]">{t(session ? "Open your dashboard" : "Get started free")}</Link>
             </div>
           </div>
           <div className="bg-white p-6 shadow-sm">
@@ -73,12 +73,12 @@ export default async function Home() {
           <p className="mt-3 max-w-2xl text-slate-600">{t("The essentials your group uses every day, designed to be quick to understand and easy to share.")}</p>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {features.map((feature) => (
-              <a key={feature.title} href={feature.href} className="border border-slate-200 bg-[#fafafa] p-6 transition hover:-translate-y-1 hover:border-[#c98b92] hover:shadow-md">
+              <Link key={feature.title} href={feature.href} className="border border-slate-200 bg-[#fafafa] p-6 transition hover:-translate-y-1 hover:border-[#c98b92] hover:shadow-md">
                 <span className="text-2xl font-black text-[#a32332]">{feature.number}</span>
                 <h3 className="mt-5 text-xl font-bold">{t(feature.title)}</h3>
                 <p className="mt-3 leading-7 text-slate-600">{t(feature.description)}</p>
                 <span className="mt-5 inline-block text-sm font-bold text-[#a32332]">{t("Learn more →")}</span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -99,7 +99,7 @@ export default async function Home() {
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{t("Quick access")}</p>
           <h3 className="mt-2 text-2xl font-bold">{t("Order together")}</h3>
           <p className="mt-4 leading-7 text-slate-600">{t("Open a post, enter the dishes, prices, and quantities you want, and submit your order for that post.")}</p>
-          <a href="/open-to-eat" className="mt-6 block rounded-md bg-[#a32332] px-5 py-3 text-center text-sm font-bold text-white hover:bg-[#871d2a]">{t("Open to eat 😊")}</a>
+          <Link href="/open-to-eat" className="mt-6 block rounded-md bg-[#a32332] px-5 py-3 text-center text-sm font-bold text-white hover:bg-[#871d2a]">{t("Open to eat 😊")}</Link>
           <div className="mt-4 bg-[#f8e9eb] px-4 py-3 text-sm font-semibold text-[#7d2632]">{t("Choose from the menu image.")}</div>
         </div>
       </section>
@@ -107,14 +107,14 @@ export default async function Home() {
       <section className="bg-[#202124] px-4 py-12 text-white sm:px-6 sm:py-14">
         <div className="mx-auto flex max-w-[1180px] flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#e7b5bb]">{t("Ready when you are")}</p><h2 className="mt-3 text-3xl font-bold">{t("Make the next week easier.")}</h2></div>
-          <a href={session ? "/dashboard" : "/register"} className="rounded-md bg-[#c92335] px-5 py-3 text-sm font-bold text-white hover:bg-[#a91d2c]">{t(session ? "Open dashboard →" : "Create your account →")}</a>
+          <Link href={session ? "/dashboard" : "/register"} className="rounded-md bg-[#c92335] px-5 py-3 text-sm font-bold text-white hover:bg-[#a91d2c]">{t(session ? "Open dashboard →" : "Create your account →")}</Link>
         </div>
       </section>
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1180px] flex-col justify-between gap-4 px-4 py-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:px-6">
           <div className="flex items-center gap-3"><Image src="/scholarship-logo.jpg" alt="" width={44} height={44} className="h-11 w-11 object-contain" /><span>{t("Scholarship Community")}</span></div>
-          <div className="flex gap-6"><a href="/dashboard" className="hover:text-[#a32332]">{t("Dashboard")}</a><a href="/account" className="hover:text-[#a32332]">{t("Account")}</a></div>
+          <div className="flex gap-6"><Link href="/dashboard" className="hover:text-[#a32332]">{t("Dashboard")}</Link><Link href="/account" className="hover:text-[#a32332]">{t("Account")}</Link></div>
           <span>© 2026 {t("Scholarship Community")}</span>
         </div>
       </footer>

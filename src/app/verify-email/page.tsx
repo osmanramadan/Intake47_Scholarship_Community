@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { fetchWithProgress as fetch } from "@/lib/request-progress";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
@@ -37,9 +38,9 @@ export default function VerifyEmailPage() {
         <h1 className="text-2xl font-bold text-slate-900">{t("Email verification")}</h1>
         <p className={`mt-4 ${success ? "text-green-700" : "text-slate-600"}`}>{message}</p>
         {success && (
-          <a href="/login" className="mt-6 inline-block rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white">
+          <Link href="/login" className="mt-6 inline-block rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white">
             {t("Go to sign in")}
-          </a>
+          </Link>
         )}
       </section>
     </main>

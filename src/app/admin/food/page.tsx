@@ -105,9 +105,9 @@ export default async function AdminFoodPage() {
                   <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4 sm:flex-col sm:items-end sm:border-0 sm:pt-0">
                     <p className="text-sm font-bold text-[#a32332]">{t("Post total: {price}", { price: formatPrice(postTotal) })}</p>
                     <div className="flex items-center gap-2">
-                      <a href={`/admin/food/${post.id}`} className="rounded-md border border-[#a32332] px-4 py-2 text-sm font-bold text-[#a32332] hover:bg-[#f8e9eb]">
+                      <Link href={`/admin/food/${post.id}`} className="rounded-md border border-[#a32332] px-4 py-2 text-sm font-bold text-[#a32332] hover:bg-[#f8e9eb]">
                         {t("View orders")}
-                      </a>
+                      </Link>
                       <DeleteOpenToEatPostButton sessionId={post.id} title={displayTitle} />
                     </div>
                   </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { LocaleBoundary } from "@/components/locale-boundary";
+import { RequestLoadingMessage } from "@/components/request-progress-indicator";
 import { getLocale } from "@/lib/locale";
 import { translate } from "@/lib/i18n";
 import "./globals.css";
@@ -24,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col">
-        <Suspense fallback={null}>
+        <Suspense fallback={<RequestLoadingMessage fullScreen />}>
           <LocaleBoundary>{children}</LocaleBoundary>
         </Suspense>
       </body>

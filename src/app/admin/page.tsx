@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SiteHeader } from "@/components/site-header";
@@ -47,7 +48,7 @@ export default async function AdminPage() {
             <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">{t("Community control center")}</h1>
             <p className="mt-3 max-w-2xl text-lg text-slate-600">{t("Manage every part of {name} before students use it.", { name: settings?.groupName ?? t("Scholarship Community") })}</p>
           </div>
-          <a href="/dashboard" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Student dashboard")}</a>
+          <Link href="/dashboard" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Student dashboard")}</Link>
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -61,12 +62,12 @@ export default async function AdminPage() {
 
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {areas.map((area) => (
-            <a id={area.id} key={area.id} href={area.href} className="scroll-mt-8 border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#c98b92] hover:shadow-md">
+            <Link id={area.id} key={area.id} href={area.href} className="scroll-mt-8 border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#c98b92] hover:shadow-md">
               <span className="text-2xl font-black text-[#a32332]">{area.accent}</span>
               <h2 className="mt-5 text-xl font-bold">{t(area.title)}</h2>
               <p className="mt-3 min-h-12 text-sm leading-6 text-slate-600">{t(area.description)}</p>
               <span className="mt-5 inline-block text-sm font-bold text-[#a32332]">{t("Manage {name} →", { name: t(area.title) })}</span>
-            </a>
+            </Link>
           ))}
         </div>
 

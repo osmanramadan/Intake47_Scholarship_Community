@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCachedServerSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SiteHeader } from "@/components/site-header";
@@ -34,7 +35,7 @@ export default async function AdminUsersPage() {
     <main className="min-h-screen bg-[#f5f6f7] text-[#202124]">
       <SiteHeader />
       <section className="mx-auto max-w-[1180px] px-4 pb-16 pt-10 sm:px-6 sm:pt-12">
-        <a href="/admin" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to admin")}</a>
+        <Link href="/admin" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to admin")}</Link>
         <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#a32332]">{t("Account administration")}</p>

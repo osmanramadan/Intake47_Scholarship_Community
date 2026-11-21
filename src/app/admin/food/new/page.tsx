@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCachedServerSession } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 import { OpenToEatForm } from "@/components/open-to-eat-form";
@@ -18,7 +19,7 @@ export default async function NewOpenToEatPage() {
     <main className="min-h-screen bg-[#f5f6f7] text-[#202124]">
       <SiteHeader />
       <section className="mx-auto max-w-[980px] px-4 pb-16 pt-10 sm:px-6 sm:pt-12">
-        <a href="/admin/food" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to food orders")}</a>
+        <Link href="/admin/food" className="text-sm font-bold text-[#a32332] hover:underline">{t("← Back to food orders")}</Link>
         <div className="mt-8">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#a32332]">{t("Open to eat 😊")}</p>
           <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">{t("Create an Open to eat post.")}</h1>
