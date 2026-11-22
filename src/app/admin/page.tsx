@@ -31,11 +31,11 @@ export default async function AdminPage() {
     prisma.groupSettings.findUnique({ where: { id: "default" }, select: { groupName: true } }),
   ]);
 
-  const stats: [string, number][] = [
-    ["Users", users],
-    ["Live polls", polls],
-    ["Open To Eat", activeMenus],
-    ["Weekly Tables uploaded", schedules],
+  const stats = [
+    { label: "Users", value: users, href: "/admin/users" },
+    { label: "Live polls", value: polls, href: "/admin/polls" },
+    { label: "Open To Eat", value: activeMenus, href: "/admin/food" },
+    { label: "Weekly Tables uploaded", value: schedules, href: "/admin/schedule" },
   ];
 
   return (
@@ -52,11 +52,15 @@ export default async function AdminPage() {
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map(([label, value]) => (
-            <div key={label} className="bg-white p-5 shadow-sm">
+          {stats.map(({ label, value, href }) => (
+            <Link
+              key={label}
+              href={href}
+              className="bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a32332]"
+            >
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{t(label)}</p>
               <p className="mt-3 text-3xl font-black text-[#a32332]">{value}</p>
-            </div>
+            </Link>
           ))}
         </div>
 
