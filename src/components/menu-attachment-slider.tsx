@@ -42,11 +42,40 @@ export function MenuAttachmentSlider({
       <div className="overflow-hidden border border-slate-200 bg-slate-50">
         {isPdf ? (
           <div>
-            <iframe
-              src={pdfViewerUrl ?? `${current.url}#toolbar=1&navpanes=0`}
-              title={`${title} - ${current.fileName}`}
-              className="h-[75vh] min-h-[480px] w-full border-0"
-            />
+            <div className="flex min-h-[260px] flex-col items-center justify-center gap-4 bg-slate-100 px-5 text-center sm:hidden">
+              <div className="rounded-md border border-slate-200 bg-white px-5 py-4">
+                <p className="max-w-[18rem] truncate font-bold">{current.fileName}</p>
+                <p className="mt-2 text-sm text-slate-600">{t("Open the PDF with your phone's PDF viewer.")}</p>
+              </div>
+              <a
+                href={pdfViewerUrl ?? `${current.url}#toolbar=1&navpanes=0`}
+                target="_blank"
+                rel="noreferrer"
+                className="min-h-12 rounded-md bg-[#a32332] px-5 py-3 text-sm font-bold text-white"
+              >
+                {t("Open PDF")}
+              </a>
+            </div>
+            <div className="hidden sm:block">
+              <object
+                data={pdfViewerUrl ?? `${current.url}#toolbar=1&navpanes=0`}
+                type="application/pdf"
+                aria-label={`${title} - ${current.fileName}`}
+                className="h-[75vh] min-h-[480px] w-full border-0"
+              >
+                <div className="flex min-h-[480px] flex-col items-center justify-center gap-4 bg-slate-100 px-5 text-center">
+                  <p className="font-bold">{t("PDF viewer is not available in this browser.")}</p>
+                  <a
+                    href={pdfViewerUrl ?? current.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-md bg-[#a32332] px-5 py-3 text-sm font-bold text-white"
+                  >
+                    {t("Open PDF")}
+                  </a>
+                </div>
+              </object>
+            </div>
             <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-white px-4 py-3">
               <p className="max-w-xl truncate text-sm font-bold">{current.fileName}</p>
               <a href={current.url} target="_blank" rel="noreferrer" className="text-sm font-bold text-[#a32332] hover:underline">
